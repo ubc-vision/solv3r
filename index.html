@@ -12,7 +12,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css?family=Google+Sans%7CNoto+Sans:400,400i,700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/style.css?v=paper-results-1">
+  <link rel="stylesheet" href="static/css/style.css?v=wordmark-1">
+  <link rel="stylesheet" href="static/css/wordmark.css?v=4">
   <link rel="stylesheet" href="static/css/loops.css">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070b'/%3E%3Cpath d='M9 21l7-11 7 11' stroke='%2396c4f2' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <script type="importmap">
@@ -21,13 +22,30 @@
   </script>
   <script type="module" src="static/js/main.js?v=gallery-2"></script>
   <script type="module" src="static/js/loops.js"></script>
+  <script type="module">
+    import('./static/js/wordmark.js?v=6').catch(() => {
+      document.getElementById('title-wordmark').classList.add('is-fallback');
+    });
+  </script>
 </head>
 <body>
 
 
 <header class="hero">
   <div class="wrap center">
-    <h1 class="title"><span class="name">Solv3R</span>: 3D Looped Transformer as a Multi-view Solver</h1>
+    <div class="title-sculpture">
+      <h1 class="title">
+        <span class="title-wordmark" id="title-wordmark">
+          <span class="wordmark-fallback">Solv3R</span>
+          <noscript><span class="wordmark-static" aria-hidden="true">Solv3R</span></noscript>
+          <canvas class="wordmark-canvas" aria-hidden="true"></canvas>
+        </span>
+        <span class="title-subtitle"><span class="wordmark-sr">: </span>3D Looped Transformer as a Multi-view Solver</span>
+      </h1>
+      <button class="wordmark-replay" type="button" aria-label="Replay the title animation" title="Replay the title animation" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1.7 7.1M4 4v6h6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
 
     <div class="authors">
       <span class="author"><a href="https://jgkwak95.github.io/" target="_blank" rel="noopener">Jeong-gi Kwak</a><sup>1</sup></span>
@@ -71,6 +89,13 @@
         <source src="static/videos/solv3r_film.mp4" type="video/mp4">
       </video>
     </figure>
+  </div>
+</section>
+
+<section class="section" id="abstract">
+  <div class="wrap narrow">
+    <h2 class="h2 center">Abstract</h2>
+    <p class="abstract">Classical structure-from-motion reconstruction proceeds iteratively, refining camera poses and scene geometry from a current estimate. This allows maps to easily expand without recomputing already computed views, or geometry estimates to improve as more observations are provided. Most geometric foundation models, however, predict entire geometry in a single forward pass or update a recurrent state as frames arrive sequentially, making this expansion and refinement non-trivial. We introduce Solv3R, a looped transformer that learns to continue solving multi-view geometry from its current state. Importantly, its update operator is independent of the iteration count, allowing previously refined and newly introduced views to be jointly updated regardless of how “solved” they are. We train the operator to preserve accurate reconstructions under continued iteration and correct inaccurate states, enabling refinement of fixed image collections and integration of new observations. Representations of solved views can also be cached once and reused as geometric context across iterations, enabling compact and efficient key-value caching. We analyze the solver dynamics and compare it with the state-of-the-art, demonstrating that a single learned solver supports offline reconstruction, incremental reconstruction, relocalization, and streaming without task-specific training or modules. The code and models will be made publicly available at <a href="https://ubc-vision.github.io/solv3r/">https://ubc-vision.github.io/solv3r/</a>.</p>
   </div>
 </section>
 
@@ -168,7 +193,7 @@
 
     <div class="card">
       <div class="card-txt">
-        <h3>Keep solving. It stays solved.</h3>
+        <h3>What was solved. Stays solved.</h3>
         <p>Solv3R stays accurate beyond its training horizon and stops when its state stabilizes. DéjàView degrades beyond its fixed schedule.</p>
       </div>
       <div class="media"><div class="svgbox" id="deep-anim"></div>
@@ -252,23 +277,6 @@
   </div>
 </section>
 
-<section class="section" id="abstract">
-  <div class="wrap narrow">
-    <h2 class="h2 center">Abstract</h2>
-    <p class="abstract">
-      In this paper, we propose Solv3R, a multi-view geometric solver that uses a single learned solving process across reconstruction settings, from fixed image collections to evolving observations.
-      Despite their strong performance, geometric foundation models are primarily designed for fixed sets of views, while continuous reconstruction often relies on specialized mechanisms to maintain and update geometry.
-      Building on a looped transformer, we learn a stationary geometric update operator that preserves consistent solutions under continued computation and corrects inaccurate states.
-      This enables reconstruction to continue from previously computed states, incorporating new observations while refining existing geometry.
-      Moreover, representations of previously solved views can be reused as geometric context across all solver calls, enabling compact and efficient KV caching.
-      Our analyses of solver behavior and comparisons with state-of-the-art methods demonstrate the effectiveness of this unified geometric solving approach across diverse reconstruction settings, without task-specific finetuning or learned modules.
-    </p>
-  </div>
-</section>
-
-
-
-
 <div class="dark" id="explore">
 
   <section class="dsection" id="gallery">
@@ -351,6 +359,14 @@
   </div>
 </section>
 
+<section class="section" id="acknowledgements">
+
+  <div class="wrap narrow center">
+    <h2 class="h2">Acknowledgements</h2>
+    <p>We thank Zan Gojcic, Haithem Turki, and Dmytro Mishkin for their valuable feedback on the paper.</p>
+  </div>
+</section>
+
 
 <section class="section" id="bibtex">
   <div class="wrap narrow">
@@ -365,10 +381,5 @@
   </div>
 </section>
 
-<footer class="foot">
-  <div class="wrap narrow center">
-    The interactive viewers show states saved during real runs of the final model. Between two saved states, points and cameras are interpolated.
-  </div>
-</footer>
 </body>
 </html>
