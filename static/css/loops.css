@@ -1,4 +1,4 @@
-/* v3 (10-31): "What a solver can do" -- self-playing panels between the film and the interactive part (no clicks needed). */
+
 .abil { padding-block: 34px 10px; }
 .abil-head { max-width: 760px; margin: 0 auto 26px; text-align: center; }
 .abil-head .kick { font: 500 0.74rem/1 var(--mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--acc); margin-bottom: 10px; }
@@ -62,7 +62,7 @@
 @media (max-width: 480px) { .photos { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (prefers-reduced-motion: reduce) { .xf img, .photos img { transition: none; } }
 
-/* v3 (11-01): "One solver for every setting" -- the film's overview below the TL;DR (one block feeding four self-playing panels) */
+
 .every { padding-block: 18px 6px; }
 .every-card { border-top: 0; padding-block: 8px 18px; }
 .every-head { text-align: center; max-width: 760px; margin: 0 auto 14px; }
@@ -79,7 +79,7 @@
 @media (prefers-reduced-motion: reduce) { .every-pill svg { animation: none; } }
 .every-card .four { margin-top: 0; }
 .every-card .every-bus { margin-bottom: 2px; }
-/* 11-01: three different scenes (the film's overview scenes), and dark tiles no longer pick up the page's .dark section spacing */
+
 .three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
 .three figure { margin: 0; min-width: 0; }
 .three figcaption { margin-top: 7px; font-size: 0.86rem; line-height: 1.35; text-align: center; }
@@ -88,12 +88,12 @@
 #every .chip:empty { display: none; }
 .xf.dark { margin-top: 0; padding: 0; }
 @media (max-width: 700px) { .three { grid-template-columns: minmax(0, 1fr); gap: 16px; } }
-/* 11-01: the #every tiles are synced video loops of the film overview's three panels; the block shows their shared call clock */
+
 .vt { position: relative; width: 100%; border-radius: 12px; overflow: hidden; background: #020304; }
 .vt video { display: block; width: 100%; height: auto; aspect-ratio: 700 / 424; object-fit: cover; background: #020304; }
 .every-call { font: 500 0.76rem/1 var(--mono); color: var(--acc); font-variant-numeric: tabular-nums; margin-left: 3px; padding-left: 9px;
               border-left: 1px solid var(--line); }
-/* 11-01: join card. The input photos form one row above both methods (no method colours); the new photos drop into empty slots */
+
 :root { --new: #26a05a; }
 .jin { display: flex; align-items: flex-end; justify-content: center; gap: 10px; margin: 0; }
 .jin-grp { display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1 1 0; max-width: 290px; }
@@ -115,8 +115,7 @@
 .legend-cam i.n { border-color: var(--new); }
 @media (max-width: 480px) { .jin { gap: 6px; } .jin-ph { gap: 3px; } .jin-lab { font-size: 0.62rem; } }
 @media (prefers-reduced-motion: reduce) { .jin-ph img.late { transition: none; } }
-/* 11-01: #every v2, the paper teaser in motion. Inputs (photos and view-state tokens) above one Solv3R bar, outputs (3D) below;
-   each panel's JSON timeline drives its photos and tokens in sync with its video (loops.js initEvery2) */
+
 :root { --tk0: #d5e4f5; --tk1: #1d3f6e; }
 .ev { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 16px; margin-top: 12px; }
 .ev-in { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 0;
@@ -160,7 +159,7 @@
   .ev-out { margin: 0 0 18px; } .ev-out .vt { border-radius: 0 0 12px 12px; }
 }
 @media (prefers-reduced-motion: reduce) { .ev-bar svg { animation: none; } .tk, .ev-photos img { transition: none; } }
-/* 11-01: the method as the film's iteration: photos -> Solv3R block -> view states -> decoded 3D, with the "next call" loop */
+
 .mt-lead { max-width: 760px; margin: 0 auto 18px; text-align: center; color: var(--muted); text-wrap: pretty; }
 .mt { position: relative; display: grid; grid-template-columns: minmax(0, 1.05fr) 26px minmax(0, 0.8fr) 26px minmax(0, 0.62fr) 26px minmax(0, 2.2fr);
       align-items: center; gap: 0; padding-bottom: 46px; }
@@ -196,8 +195,7 @@
 }
 @media (prefers-reduced-motion: reduce) { .mt-block svg { animation: none; } .mt-block.pulse { animation: none; } }
 
-/* 11-01: streaming card. Incoming frames, the Solv3R block, one token per frame (anchor / KV cache / window), the 3D below;
-   a frame that leaves the window drops into the scene (decoded); the paper's bubble chart under it */
+
 .sc-card { padding-block: 30px; }
 .sc { position: relative; display: flex; flex-direction: column; align-items: stretch; gap: 0; max-width: 980px; margin: 4px auto 0; width: 100%; }
 .sc-film { display: flex; justify-content: flex-end; gap: 4px; height: 50px; overflow: hidden; margin-bottom: 12px; }
@@ -232,7 +230,7 @@
 .mt-out .vt video { aspect-ratio: 4 / 3; }
 .sc-out .vt video { aspect-ratio: 16 / 9; }
 .mt-event::first-letter { text-transform: uppercase; }
-/* 11-01: light clip tiles (the relocalization card) */
+
 .vt.light { background: #fff; border: 1px solid var(--line); }
 .vt.light video { aspect-ratio: 16 / 10; background: #fff; }
 .sc-tokens .tk.off { width: 0; margin: 0 -2px; }
@@ -241,8 +239,7 @@
 .sc-out { max-width: 860px; width: 100%; margin: 14px auto 0; }
 @media (max-width: 600px) { .sc-tokens { gap: 3px; } .sc-tokens .tk { width: 12px; height: 10px; } }
 
-/* ===== 11-02 rework (user): tokens fill from the bottom as in the film, a film-like Solv3R block, the film's order in #every
-   (block, then the 3D, then the tokens under it), and the streaming card with the 3D first */
+
 :root { --tk-edge: #9db8d8; --tk-pale: #a9c6e6; --tk-navy: #1d3f6e; --tk-grey: #b1bac6; }
 .tk { position: relative; display: inline-block; flex: none; box-sizing: border-box; width: 12px; height: 16px; border-radius: 3.5px;
       border: 1.5px solid var(--tk-edge); background: #fff; overflow: hidden;
@@ -305,7 +302,7 @@
 .sc-refresh.on { opacity: 1; }
 .sc-ghost { background: var(--acc); }
 @media (max-width: 600px) { .sc-tokens .tk { width: 11px; height: 15px; } .sc-refresh { font-size: 0.62rem; } }
-/* 11-02: the join card's cameras carry their error colour again (the card is about correcting the first cameras); legend without numbers */
+
 .legend-cam { align-items: center; flex-wrap: wrap; }
 .legend-cam .lg-err { display: inline-flex; align-items: center; gap: 7px; }
 .legend-cam .lg-bar { display: inline-block; width: 84px; height: 7px; border-radius: 4px; border: 0; margin: 0;
@@ -317,7 +314,7 @@
 .legend-cam i.o.thin { border-width: 1px; }
 .sc-lab[data-role="anchor"] { transform: none; }
 .sc-lab[data-role="window"] { transform: translateX(-100%); }
-/* 11-02: the pipelining card plays the film's pipelining scene (v23), cropped to the two lanes */
+
 .pipe-card .card-txt { max-width: 860px; }
 .pipe-vt video { aspect-ratio: 1280 / 488; }
 .sc-lab[data-role="anchor"] { transform: translateX(-100%); top: -27px; }
@@ -325,7 +322,7 @@
 @media (max-width: 600px) { .sc-lab[data-role="anchor"], .sc-lab[data-role="window"] { top: 10px; } .sc-lab[data-role="anchor"] { transform: none; } .sc-lab[data-role="window"] { transform: translateX(-100%); } }
 .sc-lab[data-role="anchor"], .sc-lab[data-role="window"] { top: -20px; }
 
-/* ===== 11-02 round 3: method inside the abilities flow, zigzag cards, framed dark clips */
+
 .method-card { padding-top: 26px; }
 .method-card .card-txt { text-align: center; max-width: none; }
 .mt-arr { margin: 0 12px 0 6px; }
@@ -338,7 +335,7 @@
 .mt-photos { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3px; }
 .mt-tokens { grid-template-columns: repeat(4, 18px); }
 .mt { grid-template-columns: minmax(0, 1.25fr) 30px minmax(0, 0.7fr) 30px minmax(0, 0.75fr) 30px minmax(0, 2.1fr); }
-/* 11-02: setting cards (offline, streaming, any order) */
+
 .set-card .media { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .set-card .vt video { aspect-ratio: 16 / 9; }
 .set-tokens { display: flex; justify-content: center; align-items: flex-end; gap: 3px; height: 18px; width: 100%; overflow: hidden; }
@@ -349,7 +346,7 @@
 .set-photos img.new { border-color: var(--new); }
 .set-k { font: 500 0.72rem/1 var(--mono); color: var(--acc); font-variant-numeric: tabular-nums; min-height: 0.72rem; }
 .set-bub { padding-top: 0; }
-/* 11-02 r4: the join-at-any-call widget sits among the cards on the light page; its 3D and loop keep their dark panels */
+
 .how-card .how { margin-top: 6px; }
 .how-card .joinpick .jp-label, .how-card .bars-title { color: var(--muted); }
 .how-card .bars { background: var(--soft); border-color: var(--line); color: var(--ink); }
@@ -366,7 +363,7 @@
 .how-card .tl-ticks i { background: rgba(35, 39, 46, 0.25); }
 .how-card .tl-head { background: var(--acc); }
 .how-card .loop, .how-card .stage { border-color: #1b2a40; }
-/* 11-02 r4: "Any order, no matter." one clip in segments with mode tabs above and tokens below */
+
 .ao { max-width: 980px; margin: 4px auto 0; display: flex; flex-direction: column; align-items: center; gap: 9px; }
 .ao-tabs { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
 .ao-tab { border: 1px solid var(--line); background: var(--paper); color: var(--muted); border-radius: 999px; padding: 7px 15px; font: 500 0.86rem/1 var(--head); cursor: pointer; transition: all .2s; }
@@ -379,7 +376,7 @@
 .ao-photos img.off { max-width: 0; opacity: 0; margin: 0 -1.5px; }
 .ao-k { font: 500 0.72rem/1 var(--mono); color: var(--acc); font-variant-numeric: tabular-nums; min-height: 0.72rem; }
 .mt { padding-bottom: 64px; }
-/* 11-02: film-style chip rows under the #every clips */
+
 .ev3-tokens.fchips { position: relative; height: 16px; margin: 4px auto 0; overflow: visible; display: block; }
 .fc { position: absolute; top: 0; width: 12px; height: 15px; border-radius: 3.5px; box-sizing: border-box; border: 1.5px solid var(--tk-edge); background: #fff; overflow: hidden; transition: opacity .2s; }
 .fc > b { position: absolute; left: 0; right: 0; bottom: 0; height: 0; }

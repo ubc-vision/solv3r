@@ -1,6 +1,6 @@
-// Solv3R project page: dense gallery viewer (final solved states, millions of points, eye-dome lighting).
-// v3 (11-01): the viewer can also play the solve of the same run, call by call (states saved during the run, static/play/<scene>), with the
-// film's view-state chips below the stage, and cross-fades back to the dense final cloud at the end.
+
+
+
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { errColor, EDL, Layer, SolveData, StreamData, Timeline, ACC_L, PALE, NEUTRAL, css } from './solve.js';
@@ -63,7 +63,7 @@ export class GalleryView {
     stage.prepend(this.canvas);
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: false, powerPreference: 'high-performance' });
     this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
-    this.edl = new EDL(this.renderer, { strength: opts.edl ?? 0.2 });      // 11-02: lighter edge shading and smaller points, closer to plain renders
+    this.edl = new EDL(this.renderer, { strength: opts.edl ?? 0.2 });
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(45, 16 / 9, 0.01, 60);
     this.controls = new OrbitControls(this.camera, this.canvas);

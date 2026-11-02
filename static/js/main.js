@@ -122,18 +122,18 @@ class Player {
   }
 }
 
-// ---------------------------------------------------------------- 1. gallery: final solved states, dense; "Play the solve" plays the same run
-// call by call (static/play/<id>: the saved states, in the dense cloud's frame, scripts/web/play_align.py).  mode: how the chips show the views.
+
+
 const GALLERY = [
-  // v3 (11-02): four scenes the user picked, offline solves of 48 photos (the gallery pool, runs/web_1031/pool); dense and photos in static/dense/<id>
-  // 11-02 (user: more any-order and streaming scenes): scenes3 any-order runs, 8 photos then waves of 4 in a random order (runs/web_1101/galvid/any_prep.sbatch)
-  // 11-02 order (user): settings mixed, not all offline first; the DL3DV sofa dropped
+
+
+
   { id: 'colosseum', name: 'Colosseum', setting: 'Offline', sub: '91 photos at once', play: { mode: 'offline', duration: 9 },
     note: 'VGGT example images. All 91 photos are solved together for 24 calls.' },
   { id: 'canyon', name: 'Basalt canyon', poster: 'static/dense/canyon_stream/views/024.jpg', setting: 'Streaming', sub: 'a video, frame by frame', play: { mode: 'stream', duration: 14 }, dense: 'static/dense/canyon_stream', camera: { yaw: 0, elev: 30, dist: 2.75 },
     note: 'VGGT example video (Studlagil canyon), 85 frames. Each frame is solved when it arrives, in a small window of recent and anchor frames.' },
   { id: 'rubble', name: 'Rubble', setting: 'Any order', sub: 'photos arriving in any order', play: { mode: 'ooo', duration: 18, pointScale: 0.7 },
-    // the oblique view of the paper teaser's incremental panel (yaw -120, elevation 38 there), in this scene's frame: scripts/web/teaser_cam.py
+
     camera: { yaw: -80, elev: 36, dist: 2.5, target: [0.089, 0.016, 0.008], fov: 42 },
     note: 'Mill19, 96 aerial photos. Eight photos spread over the site are solved first, and the other 88 arrive in a random order, eight at a time. Cameras are colored by their rotation error against the dataset poses.' },
   { id: 'palace', name: 'Palace of Fine Arts', poster: 'static/dense/palace/views/024.jpg', setting: 'Offline', sub: '48 photos at once', play: { mode: 'offline', duration: 9 }, dense: 'static/dense/palace', camera: { yaw: 0, elev: 35, dist: 2.4 },
@@ -146,10 +146,10 @@ const GALLERY = [
     note: 'DL3DV-10K validation scene. All 48 photos are solved together. The ceiling is hidden so that the aisle can be seen from above.' },
   { id: 'courtroom', name: 'Courtroom', poster: 'static/dense/courtroom/views/024.jpg', setting: 'Any order', sub: 'photos arriving in any order', play: { mode: 'ooo', duration: 14 }, dense: 'static/dense/courtroom', camera: { yaw: 0, elev: 35, dist: 2.4 },
     note: 'Tanks and Temples Courtroom, 48 photos. Eight photos are solved first, and the other 40 arrive in a random order, four at a time. The ceiling is hidden so that the room can be seen from above.' },
-  { id: 'london', name: 'Living room', poster: 'static/dense/london/views/024.jpg', setting: 'Any order', sub: 'photos arriving in any order', play: { mode: 'ooo', duration: 14 }, dense: 'static/dense/london', camera: { yaw: 60, elev: 35, dist: 1.2, target: [-0.1, -0.15, 0] }   /* inside the room (user) */,
+  { id: 'london', name: 'Living room', poster: 'static/dense/london/views/024.jpg', setting: 'Any order', sub: 'photos arriving in any order', play: { mode: 'ooo', duration: 14 }, dense: 'static/dense/london', camera: { yaw: 60, elev: 35, dist: 1.2, target: [-0.1, -0.15, 0] }   ,
     note: 'Zip-NeRF London living room, 48 photos. Eight photos are solved first, and the other 40 arrive in a random order, four at a time.' },
-  // sofas (user's own lounge capture) dropped 11-02 (user: no time)
-  // shop (Cambridge streaming) dropped 11-02 (user: the last streaming scene is not needed)
+
+
 ];
 const GAL = 'static/gallery', PLAY = 'static/play';
 
@@ -169,11 +169,11 @@ function initGallery() {
     const b = document.createElement('button');
     b.className = 'gal-card'; b.setAttribute('role', 'tab'); b.dataset.id = g.id;
     b.innerHTML = `<span class="gal-thumb" style="background-image:url(${g.poster ?? `${GAL}/${g.id}/poster.jpg`})"></span>
-      <span class="gal-txt"><em>${g.setting}</em><span>${g.sub}</span></span>`;   // 11-02: no scene names (user)
+      <span class="gal-txt"><em>${g.setting}</em><span>${g.sub}</span></span>`;
     b.addEventListener('click', () => open(i, true));
     picker.appendChild(b);
   });
-  // 11-02: the strip scrolls with arrow buttons, a vertical wheel over it, and drag (it did not scroll with a mouse wheel)
+
   {
     const strip = picker, wrapS = document.createElement('div'); wrapS.className = 'gal-strip';
     strip.parentNode.insertBefore(wrapS, strip); wrapS.appendChild(strip);
@@ -209,12 +209,12 @@ function initGallery() {
       });
       bar.parentElement.classList.add('done');
       const e = (view.meta?.err ?? []).filter((x) => x !== null && x > 0);
-      note.textContent = g.note;                     // 11-01: no numbers under the scenes (user)
+      note.textContent = g.note;
       if (view.meta) play.ready(g.id);
     } catch (err) { loading.textContent = 'Scene not available yet'; }
   }
-  // 11-02: "Play the solve" plays a rendered video of the solve (static/play_video/<id>.mp4, scripts/web/gallery_video.py) that ends on the
-  // viewer's home view, then fades into the live dense cloud (the point playback drew points that did not end where the dense cloud is)
+
+
   {
     let vid = null;
     const btn = $('.gal-playbtn', root), txt = btn.querySelector('span');

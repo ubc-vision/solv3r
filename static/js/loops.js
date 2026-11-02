@@ -1,5 +1,5 @@
-// Solv3R project page v3 (10-31): self-playing panels of "What a solver can do".
-// Every panel runs only while it is on screen; with prefers-reduced-motion it shows its last state and stays still.
+
+
 const RM = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 const SVGNS = 'http://www.w3.org/2000/svg';
 const $ = (s, r = document) => r.querySelector(s);
@@ -230,10 +230,10 @@ function initEvery(box) {
   });
 }
 
-// ================================================================== 11-01: clips with JSON timelines (#every, method, streaming card)
-// A clip's timeline, written next to its video, gives the call count over video time, when each input photo arrives (and leaves),
-// and a schematic row of view-state tokens. A token has received c0 + calls(t) - calls(arrive) calls while it is present; its colour
-// runs from the initial state (light) to solved (dark) as 1 - 0.8^calls. Streaming tokens also carry roles (anchor, window, cache).
+
+
+
+
 const TKP = hex('#a9c6e6'), TKM = hex('#4589d0'), TK1 = hex('#1d3f6e'), TKC = hex('#b1bac6');
 const tkCol = (lv) => rgb(mix(TKP, TKM, Math.min(1, lv)));        // the fill of a token: pale when barely solved, accent when solved (as the film)
 function callsAt(calls, t) {
@@ -369,8 +369,8 @@ class FilmChips {
   }
 }
 
-// ------------------------------------------------------------------ one solver for every setting, film order (#every, 11-02)
-// The Solv3R block on top feeds three panels; each call sends a pulse down the wires. Under each 3D: its tokens and input photos.
+
+
 async function initEvery3(box) {
   const ev = $('.ev3', box); if (!ev) return;
   const cols = $$('.ev3-col', ev).map((c) => ({ c, panel: c.dataset.panel, vid: $('video', c), url: c.dataset.src ? `${c.dataset.src}.json` : `${ev.dataset.base}/${c.dataset.panel}.json` }));

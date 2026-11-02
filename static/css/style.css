@@ -248,7 +248,7 @@ table.res tr.ours td.r3 { background: rgb(252, 244, 209); }
 }
 
 /* ------------------------------------------------------------ gallery */
-/* v3 (11-02): a narrower viewer (scrolling the page past it is easier), the scenes as a horizontal strip below it */
+
 .wrap.gal-wrap { max-width: 1060px; }
 .gal-picker { display: flex; gap: 10px; margin-top: 14px; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 6px;
   scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.18) transparent; }
@@ -303,7 +303,7 @@ table.res tr.ours td.r3 { background: rgb(252, 244, 209); }
   .gal-info { max-width: calc(100% - 160px); }
   .gal-call strong { font-size: 1.3rem; }
 }
-/* 11-02: scene strip with arrows; no scene names */
+
 .gal-strip { position: relative; }
 .gal-strip .gal-picker { scroll-snap-type: none; cursor: grab; scroll-behavior: auto; }
 .gal-arrow { position: absolute; top: 50%; transform: translateY(-40%); z-index: 3; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--d-line2);
@@ -313,5 +313,5 @@ table.res tr.ours td.r3 { background: rgb(252, 244, 209); }
 .gal-txt span { color: var(--d-muted); }
 .gal-info .gal-name { display: none; }
 
-/* 11-02: the gallery's solve video, over the live viewer until it ends */
+
 .gal-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: var(--d-stage); z-index: 1; opacity: 0; transition: opacity .4s; cursor: grab; }
