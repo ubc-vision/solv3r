@@ -13,7 +13,6 @@ if (host) initialize().catch(() => {
 
 async function initialize() {
   const canvas = host.querySelector('canvas');
-  const replay = document.querySelector('.wordmark-replay');
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   const response = await fetch(new URL('./wordmark-font.json', import.meta.url));
   if (!response.ok) throw new Error('Title font unavailable');
@@ -330,20 +329,18 @@ async function initialize() {
     requestFrame();
   });
   host.addEventListener('pointerleave', () => { target.x = 0; target.y = 0; requestFrame(); });
-  replay.addEventListener('click', () => { elapsed.value = motion.matches ? duration : 0; previous = 0; requestFrame(); });
   canvas.addEventListener('webglcontextlost', event => {
     event.preventDefault(); lost = true;
-    host.classList.remove('is-ready'); host.classList.add('is-fallback'); replay.hidden = true;
+    host.classList.remove('is-ready'); host.classList.add('is-fallback');
   });
   canvas.addEventListener('webglcontextrestored', () => {
     lost = false; elapsed.value = duration;
-    host.classList.remove('is-fallback'); host.classList.add('is-ready'); replay.hidden = false; requestFrame();
+    host.classList.remove('is-fallback'); host.classList.add('is-ready'); requestFrame();
   });
   resize();
   cancelAnimationFrame(frame);
   frame = 0;
   render(performance.now());
   host.classList.remove('is-fallback'); host.classList.add('is-ready');
-  replay.hidden = false;
   requestFrame();
 }

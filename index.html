@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css?family=Google+Sans%7CNoto+Sans:400,400i,700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="static/css/style.css?v=wordmark-1">
-  <link rel="stylesheet" href="static/css/wordmark.css?v=4">
+  <link rel="stylesheet" href="static/css/wordmark.css?v=5">
   <link rel="stylesheet" href="static/css/loops.css">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070b'/%3E%3Cpath d='M9 21l7-11 7 11' stroke='%2396c4f2' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <script type="importmap">
@@ -23,7 +23,7 @@
   <script type="module" src="static/js/main.js?v=gallery-2"></script>
   <script type="module" src="static/js/loops.js"></script>
   <script type="module">
-    import('./static/js/wordmark.js?v=6').catch(() => {
+    import('./static/js/wordmark.js?v=7').catch(() => {
       document.getElementById('title-wordmark').classList.add('is-fallback');
     });
   </script>
@@ -42,9 +42,6 @@
         </span>
         <span class="title-subtitle"><span class="wordmark-sr">: </span>3D Looped Transformer as a Multi-view Solver</span>
       </h1>
-      <button class="wordmark-replay" type="button" aria-label="Replay the title animation" title="Replay the title animation" hidden>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1.7 7.1M4 4v6h6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
     </div>
 
     <div class="authors">
@@ -95,7 +92,7 @@
 <section class="section" id="abstract">
   <div class="wrap narrow">
     <h2 class="h2 center">Abstract</h2>
-    <p class="abstract">Classical structure-from-motion reconstruction proceeds iteratively, refining camera poses and scene geometry from a current estimate. This allows maps to easily expand without recomputing already computed views, or geometry estimates to improve as more observations are provided. Most geometric foundation models, however, predict entire geometry in a single forward pass or update a recurrent state as frames arrive sequentially, making this expansion and refinement non-trivial. We introduce Solv3R, a looped transformer that learns to continue solving multi-view geometry from its current state. Importantly, its update operator is independent of the iteration count, allowing previously refined and newly introduced views to be jointly updated regardless of how “solved” they are. We train the operator to preserve accurate reconstructions under continued iteration and correct inaccurate states, enabling refinement of fixed image collections and integration of new observations. Representations of solved views can also be cached once and reused as geometric context across iterations, enabling compact and efficient key-value caching. We analyze the solver dynamics and compare it with the state-of-the-art, demonstrating that a single learned solver supports offline reconstruction, incremental reconstruction, relocalization, and streaming without task-specific training or modules. The code and models will be made publicly available at <a href="https://ubc-vision.github.io/solv3r/">https://ubc-vision.github.io/solv3r/</a>.</p>
+    <p class="abstract">Classical structure-from-motion reconstruction proceeds iteratively, refining camera poses and scene geometry from a current estimate. This allows maps to easily expand without recomputing already computed views, or geometry estimates to improve as more observations are provided. Most geometric foundation models, however, predict entire geometry in a single forward pass or update a recurrent state as frames arrive sequentially, making this expansion and refinement non-trivial. We introduce Solv3R, a looped transformer that learns to continue solving multi-view geometry from its current state. Importantly, its update operator is independent of the iteration count, allowing previously refined and newly introduced views to be jointly updated regardless of how “solved” they are. We train the operator to preserve accurate reconstructions under continued iteration and correct inaccurate states, enabling refinement of fixed image collections and integration of new observations. Representations of solved views can also be cached once and reused as geometric context across iterations, enabling compact and efficient key-value caching. We analyze the solver dynamics and compare it with the state-of-the-art, demonstrating that a single learned solver supports offline reconstruction, incremental reconstruction, relocalization, and streaming without task-specific training or modules.</p>
   </div>
 </section>
 
