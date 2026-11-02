@@ -1,4 +1,5 @@
 name: Deploy project page (manual)
+run-name: Publish Solv3R website (${{ github.ref_name }})
 
 # No push or release trigger: publication requires an explicit manual run.
 on:
