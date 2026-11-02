@@ -6,7 +6,7 @@
   position: relative; display: block; width: min(420px, 100%); aspect-ratio: 3.1;
   margin: 0 auto 9px; isolation: isolate;
 }
-.wordmark-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .25s; }
+.wordmark-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .10s; }
 .wordmark-fallback {
   position: absolute; width: 1px; height: 1px; padding: 0;
   overflow: hidden; clip-path: inset(50%); white-space: nowrap;
@@ -14,7 +14,7 @@
 .title-wordmark.is-fallback .wordmark-fallback, .wordmark-static {
   position: absolute; inset: 0; display: grid; place-items: center;
   width: auto; height: auto; overflow: visible; clip-path: none;
-  font: 700 clamp(3rem, 9vw, 4.75rem)/1 var(--head); letter-spacing: -.065em; color: #365366;
+  font: 700 clamp(3rem, 9vw, 4.75rem)/1 var(--head); letter-spacing: -.065em; color: #bd7953;
 }
 .title-wordmark.is-ready .wordmark-canvas { opacity: 1; }
 .title-sculpture .title-subtitle {

@@ -1,5 +1,5 @@
 // An illustrative wordmark inspired by the any-order reconstruction video.
-// Four batches add local surfaces. Each batch is followed by four shared updates.
+// Three batches add local surfaces, each followed by three shared updates.
 // This is a procedural title animation, not an output of the learned model.
 import * as THREE from 'three';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
@@ -55,10 +55,15 @@ async function initialize() {
   const clamp = x => Math.max(0, Math.min(1, x));
   const smooth = x => { x = clamp(x); return x * x * (3 - 2 * x); };
   const linear = x => x <= .04045 ? x / 12.92 : ((x + .055) / 1.055) ** 2.4;
-  const stages = [0, 1.35, 2.70, 4.05];
-  const updatesPerStage = 4;
-  const solveEnd = 5.55;
-  const duration = 6.05;
+  const stages = [0, .48, .96];
+  const updatesPerStage = 3;
+  const updateDelay = .19;
+  const updateSpacing = .105;
+  const updateDuration = .065;
+  const settleStart = 1.43;
+  const settleDuration = .10;
+  const solveEnd = 1.48;
+  const duration = 1.68;
   const cameraRandom = key => { const n = Math.sin(key * 127.1 + 311.7) * 43758.5453; return n - Math.floor(n); };
   // Each camera observes one bounded patch. Top/bottom regions of the letters
   // arrive in different batches, leaving actual missing geometry between stages.
@@ -66,15 +71,15 @@ async function initialize() {
     { stage: 0, x: -.80, targetY: .52 },
     { stage: 0, x: .04,  targetY: .42 },
     { stage: 0, x: .38,  targetY: -.52 },
+    { stage: 0, x: -.21, targetY: .52 },
     { stage: 1, x: -.47, targetY: -.42 },
     { stage: 1, x: .78,  targetY: .52 },
     { stage: 1, x: -.21, targetY: -.52 },
+    { stage: 1, x: .04,  targetY: -.42 },
     { stage: 2, x: -.80, targetY: -.52 },
     { stage: 2, x: -.47, targetY: .42 },
     { stage: 2, x: .38,  targetY: .52 },
-    { stage: 3, x: -.21, targetY: .52 },
-    { stage: 3, x: .04,  targetY: -.42 },
-    { stage: 3, x: .78,  targetY: -.52 },
+    { stage: 2, x: .78,  targetY: -.52 },
   ].map((view, index) => {
     // Deterministic scatter in 3D, including over the letters. The projected
     // height stays within the title, without arranging cameras into rows.
@@ -90,7 +95,9 @@ async function initialize() {
   function solverCalls(time) {
     let calls = 0;
     for (const start of stages) {
-      for (let k = 0; k < updatesPerStage; k++) calls += smooth((time - start - .55 - k * .20) / .10);
+      for (let k = 0; k < updatesPerStage; k++) {
+        calls += smooth((time - start - updateDelay - k * updateSpacing) / updateDuration);
+      }
     }
     return calls;
   }
@@ -124,7 +131,7 @@ async function initialize() {
     const mineral = Math.sin(point.x * 5.4 + Math.sin(point.y * 4.7)) * Math.sin(point.y * 7.5 + point.z * 3);
     const fleck = Math.sin(point.x * 107 + point.z * 53) * Math.sin(point.y * 91 - point.x * 23);
     const tone = .065 * mineral + .035 * fleck + .11 * (grain - .5) - (grain < .055 ? .17 : 0);
-    colors.set([linear(clamp(.37 + tone)), linear(clamp(.48 + tone)), linear(clamp(.56 + tone))], i * 3);
+    colors.set([linear(clamp(.86 + tone * .30)), linear(clamp(.60 + tone * .30)), linear(clamp(.44 + tone * .30))], i * 3);
     point.addScaledVector(n, (grain - .5) * .005);
     points.set([point.x, point.y, point.z], i * 3);
     normal.set([n.x, n.y, n.z], i * 3);
@@ -140,7 +147,7 @@ async function initialize() {
       if (score < best) { best = score; view = j; }
     });
     viewIds[i] = view;
-    arrivals[i] = views[view].at + .38 + random() * .06;
+    arrivals[i] = views[view].at + .10 + random() * .015;
     firstCalls[i] = views[view].stage * updatesPerStage;
     seeds[i] = random();
     // Depth errors follow the observing camera's rays, with independent smaller
@@ -210,10 +217,10 @@ async function initialize() {
         vec4 mv = modelViewMatrix * vec4(p, 1.0);
         vColor = color;
         vNormal = normalize(normalMatrix * rotateY(normal, angle));
-        float density = mix(.37 + .63 * (1.0 - pow(.52, localCalls)), 1.0, uSettled);
-        vPresence = smoothstep(aArrival, aArrival + .14, uElapsed) * density;
+        float density = mix(.55 + .45 * (1.0 - pow(.52, localCalls)), 1.0, uSettled);
+        vPresence = smoothstep(aArrival, aArrival + .06, uElapsed) * density;
         vSeed = aSeed;
-        gl_PointSize = uSize * mix(.62, 1.0, max(uSettled, smoothstep(0.0, 3.5, localCalls)));
+        gl_PointSize = uSize * mix(.80, 1.0, max(uSettled, smoothstep(0.0, 2.5, localCalls)));
         gl_Position = projectionMatrix * mv;
       }
     `,
@@ -229,7 +236,7 @@ async function initialize() {
         float diffuse = max(0.0, dot(n, normalize(vec3(-.45, .65, 1.0))));
         float top = max(0.0, n.y);
         float specular = pow(max(0.0, dot(n, normalize(vec3(-.3, .55, 1.8)))), 32.0);
-        vec3 lit = vColor * (.38 + diffuse * .85 + top * .22) + specular * .11;
+        vec3 lit = vColor * (.50 + diffuse * .66 + top * .12) + specular * .045;
         gl_FragColor = vec4(lit, 1.0);
         #include <tonemapping_fragment>
         #include <colorspace_fragment>
@@ -249,7 +256,7 @@ async function initialize() {
     const g = new THREE.BufferGeometry();
     g.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
     // Explicit linear color avoids changing the gallery's global color settings.
-    const color = new THREE.Color().setRGB(linear(.18), linear(.32), linear(.50));
+    const color = new THREE.Color().setRGB(linear(.40), linear(.32), linear(.27));
     const m = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0, depthWrite: false, depthTest: false });
     const wire = new THREE.LineSegments(g, m);
     wire.renderOrder = 2;
@@ -273,15 +280,15 @@ async function initialize() {
     previous = now;
     if (!motion.matches) elapsed.value = Math.min(duration, elapsed.value + dt);
     calls.value = solverCalls(elapsed.value);
-    settled.value = smooth((elapsed.value - 5.30) / .25);
+    settled.value = smooth((elapsed.value - settleStart) / settleDuration);
     tiltX += (target.x - tiltX) * .12; tiltY += (target.y - tiltY) * .12;
     sculpture.rotation.set(.02 + tiltY, -.13 + tiltX, -.01);
     const cameraFade = 1 - smooth((elapsed.value - solveEnd) / (duration - solveEnd));
     for (const { wire, view, base, aim, orientation } of cameras) {
       const age = elapsed.value - view.at;
-      // Three cameras arrive together; their surface patches follow shortly after.
-      const appears = smooth(age / .12);
-      wire.material.opacity = appears * (.62 + .30 * Math.exp(-Math.max(0, age) * .8)) * cameraFade;
+      // New cameras lead the surface patches; older cameras recede between batches.
+      const appears = smooth(age / .05);
+      wire.material.opacity = appears * (.22 + .56 * Math.exp(-Math.max(0, age) * 4.5)) * cameraFade;
       wire.visible = wire.material.opacity > .001;
       const correction = Math.pow(.57, Math.max(0, calls.value - view.stage * updatesPerStage)) * (1 - settled.value);
       wire.position.copy(base);
