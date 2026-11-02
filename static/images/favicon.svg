@@ -1,15 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <defs>
-    <linearGradient id="bg" x2=".8" y2="1"><stop stop-color="#20344d"/><stop offset="1" stop-color="#0a1320"/></linearGradient>
-    <linearGradient id="top" x2=".8" y2="1"><stop stop-color="#e3f3fc"/><stop offset="1" stop-color="#94c9eb"/></linearGradient>
-    <linearGradient id="left" x2="1" y2="1"><stop stop-color="#75add8"/><stop offset="1" stop-color="#36658f"/></linearGradient>
-    <linearGradient id="right" x2=".2" y2="1"><stop stop-color="#afd9f2"/><stop offset="1" stop-color="#5996c5"/></linearGradient>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#20344d"/><stop offset="1" stop-color="#0a1320"/></linearGradient>
+    <linearGradient id="glass" x1=".2" y1="0" x2=".8" y2="1"><stop stop-color="#fff5cb"/><stop offset=".55" stop-color="#ffd885"/><stop offset="1" stop-color="#e9a94c"/></linearGradient>
   </defs>
   <rect width="32" height="32" rx="8" fill="url(#bg)"/>
-  <path d="M24.5 7.5a12 12 0 1 1-17 0" fill="none" stroke="#84bee7" stroke-width="1.65" stroke-linecap="round"/>
-  <path d="m8.8 6.2-.6 4.6-3.7-2.9Z" fill="#b8dff7"/>
-  <path d="m16 7.3 7.3 4.2-7.3 4.2-7.3-4.2Z" fill="url(#top)"/>
-  <path d="m8.7 11.5 7.3 4.2v8.5l-7.3-4.3Z" fill="url(#left)"/>
-  <path d="m16 15.7 7.3-4.2v8.4L16 24.2Z" fill="url(#right)"/>
-  <path d="m8.7 11.5 7.3 4.2 7.3-4.2M16 15.7v8.5" fill="none" stroke="#d8effc" stroke-width=".55" stroke-opacity=".55" stroke-linejoin="round"/>
+  <path d="M16 5.2c-5 0-8.4 3.5-8.4 8.2 0 2.9 1.5 5.1 3.5 7 .9 1 1.3 1.8 1.3 2.6h7.2c0-.8.4-1.6 1.3-2.6 2-1.9 3.5-4.1 3.5-7 0-4.7-3.4-8.2-8.4-8.2Z" fill="url(#glass)"/>
+  <path d="M11 13.3a5 5 0 0 1 5-5" fill="none" stroke="#fff9e3" stroke-width="1.5" stroke-linecap="round" opacity=".9"/>
+  <path d="M19.5 13.2a3.5 3.5 0 1 0-3.4 3.8" fill="none" stroke="#704f35" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="m16.8 15.7-1.1 1.5 1.9.2" fill="none" stroke="#704f35" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M12.1 23.1h7.8v2.1h-7.8zm.9 3h6v1.8h-6z" fill="#a8cce4"/>
+  <path d="M14 28.5h4" stroke="#a8cce4" stroke-width="1.2" stroke-linecap="round"/>
 </svg>
