@@ -1,0 +1,386 @@
+/* v3 (10-31): "What a solver can do" -- self-playing panels between the film and the interactive part (no clicks needed). */
+.abil { padding-block: 34px 10px; }
+.abil-head { max-width: 760px; margin: 0 auto 26px; text-align: center; }
+.abil-head .kick { font: 500 0.74rem/1 var(--mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--acc); margin-bottom: 10px; }
+.abil-head p { color: var(--muted); margin: 0; text-wrap: pretty; }
+.card { display: grid; grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.3fr); gap: 30px; align-items: center;
+        padding-block: 30px; border-top: 1px solid var(--line); }
+.card.flip { grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.82fr); }
+.card.flip .card-txt { order: 2; }
+.card.wide { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+.card-txt h3 { font: 500 1.32rem/1.3 var(--head); margin: 0 0 10px; text-wrap: balance; }
+.card-txt p { margin: 0 0 10px; color: var(--ink); text-wrap: pretty; }
+.card-txt .num { color: var(--muted); font-size: 0.88rem; margin: 12px 0 0; }
+.card-txt .num b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.card.wide .card-txt { max-width: 820px; }
+.media { min-width: 0; }
+.media-cap { color: var(--faint); font-size: 0.8rem; margin: 8px 2px 0; }
+
+/* crossfade loops */
+.xf { position: relative; width: 100%; border-radius: 12px; overflow: hidden; background: var(--paper); border: 1px solid var(--line); }
+.xf.dark { background: #0a0d14; border-color: #0a0d14; }
+.xf img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.7s ease; }
+.xf img.on { opacity: 1; }
+.xf .sizer { display: block; width: 100%; height: auto; visibility: hidden; position: static; opacity: 0; }
+.xf .chip { position: absolute; left: 8px; top: 8px; font: 500 0.72rem/1 var(--mono); padding: 5px 7px; border-radius: 6px;
+            background: rgba(255, 255, 255, 0.86); color: var(--ink); border: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.xf.dark .chip { background: rgba(10, 13, 20, 0.72); color: #e8edf4; border-color: rgba(255, 255, 255, 0.12); }
+.dots { display: flex; gap: 5px; justify-content: center; margin-top: 8px; }
+.dots i { width: 6px; height: 6px; border-radius: 3px; background: var(--line); transition: background 0.3s, width 0.3s; }
+.dots i.on { background: var(--acc); width: 16px; }
+
+/* 4-up: one scene, four ways of receiving photos */
+.four { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 6px; }
+.four figure { margin: 0; min-width: 0; }
+.four figcaption { margin-top: 7px; font-size: 0.84rem; line-height: 1.35; }
+.four figcaption b { display: block; font: 500 0.9rem/1.3 var(--head); }
+.four figcaption span { color: var(--muted); }
+
+/* two methods side by side */
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.pair figure { margin: 0; min-width: 0; }
+.pair .who { font: 500 0.86rem/1.2 var(--head); margin-bottom: 6px; display: flex; align-items: center; gap: 7px; }
+.pair .who i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.photos { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 5px; margin-top: 10px; }
+.photos img { width: 100%; height: auto; border-radius: 4px; display: block; transition: opacity 0.6s, transform 0.6s; }
+.photos img.late { opacity: 0.18; transform: translateY(4px); }
+.photos img.late.in { opacity: 1; transform: none; }
+.legend-err { display: flex; align-items: center; gap: 8px; color: var(--faint); font-size: 0.78rem; margin-top: 8px; }
+.legend-err .bar { width: 120px; height: 7px; border-radius: 4px; background: linear-gradient(90deg, #269a5a 0%, #26965a 18%, #e1aa28 55%, #c83232 100%); }
+
+/* drawn panels (svg) */
+.svgbox { width: 100%; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); padding: 10px 12px 6px; }
+.svgbox svg { display: block; width: 100%; height: auto; overflow: visible; }
+.svgbox text { font-family: var(--sans); }
+.svgbox .mono { font-family: var(--mono); }
+
+@media (max-width: 860px) {
+  .card, .card.flip { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .card.flip .card-txt { order: 0; }
+  .four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 480px) { .photos { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (prefers-reduced-motion: reduce) { .xf img, .photos img { transition: none; } }
+
+/* v3 (11-01): "One solver for every setting" -- the film's overview below the TL;DR (one block feeding four self-playing panels) */
+.every { padding-block: 18px 6px; }
+.every-card { border-top: 0; padding-block: 8px 18px; }
+.every-head { text-align: center; max-width: 760px; margin: 0 auto 14px; }
+.every-head .h2 { margin-bottom: 6px; }
+.every-head p { color: var(--muted); margin: 0; text-wrap: balance; }
+.every-tree { display: flex; flex-direction: column; align-items: center; }
+.every-pill { display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 10px; border: 1.5px solid var(--acc);
+              color: var(--ink); font: 500 0.92rem/1 var(--head); background: var(--paper); }
+.every-pill svg { width: 15px; height: 15px; color: var(--acc); animation: every-spin 3.2s linear infinite; }
+@keyframes every-spin { to { transform: rotate(360deg); } }
+.every-bus { width: 100%; height: 34px; display: block; }
+.every-bus path { fill: none; stroke: var(--acc); stroke-width: 1.5; vector-effect: non-scaling-stroke; opacity: 0.7; }
+@media (max-width: 860px) { .every-bus { display: none; } .every-tree { margin-bottom: 12px; } }
+@media (prefers-reduced-motion: reduce) { .every-pill svg { animation: none; } }
+.every-card .four { margin-top: 0; }
+.every-card .every-bus { margin-bottom: 2px; }
+/* 11-01: three different scenes (the film's overview scenes), and dark tiles no longer pick up the page's .dark section spacing */
+.three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.three figure { margin: 0; min-width: 0; }
+.three figcaption { margin-top: 7px; font-size: 0.86rem; line-height: 1.35; text-align: center; }
+.three figcaption b { display: block; font: 500 0.94rem/1.3 var(--head); }
+.three figcaption span { color: var(--muted); }
+#every .chip:empty { display: none; }
+.xf.dark { margin-top: 0; padding: 0; }
+@media (max-width: 700px) { .three { grid-template-columns: minmax(0, 1fr); gap: 16px; } }
+/* 11-01: the #every tiles are synced video loops of the film overview's three panels; the block shows their shared call clock */
+.vt { position: relative; width: 100%; border-radius: 12px; overflow: hidden; background: #020304; }
+.vt video { display: block; width: 100%; height: auto; aspect-ratio: 700 / 424; object-fit: cover; background: #020304; }
+.every-call { font: 500 0.76rem/1 var(--mono); color: var(--acc); font-variant-numeric: tabular-nums; margin-left: 3px; padding-left: 9px;
+              border-left: 1px solid var(--line); }
+/* 11-01: join card. The input photos form one row above both methods (no method colours); the new photos drop into empty slots */
+:root { --new: #26a05a; }
+.jin { display: flex; align-items: flex-end; justify-content: center; gap: 10px; margin: 0; }
+.jin-grp { display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1 1 0; max-width: 290px; }
+.jin-lab { font: 500 0.7rem/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.jin-new .jin-lab { color: var(--new); }
+.jin-ph { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+.jin-ph img, .jin-ph .slot { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 4px; }
+.jin-ph img { object-fit: cover; border: 2px solid #4a4a4a; box-sizing: border-box; }
+.jin-ph .slot { border: 1.5px dashed #b9c0ca; box-sizing: border-box; position: relative; }
+.jin-ph .slot img { position: absolute; inset: -1.5px; width: calc(100% + 3px); height: calc(100% + 3px); border-color: var(--new); }
+.jin-ph img.late { opacity: 0; transform: translateY(-12px) scale(0.94); transition: opacity 0.5s ease, transform 0.5s ease; }
+.jin-ph img.late.in { opacity: 1; transform: none; }
+.jin-plus { font: 400 1.5rem/1 var(--head); color: var(--muted); padding-bottom: 12px; }
+.jin-fan { width: 100%; height: 22px; display: block; margin: 2px 0 4px; }
+.jin-fan path { fill: none; stroke: #c5ccd6; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.legend-cam { display: flex; gap: 18px; justify-content: center; color: var(--faint); font-size: 0.78rem; margin-top: 8px; }
+.legend-cam i { display: inline-block; width: 13px; height: 10px; border: 2px solid; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.legend-cam i.o { border-color: #404040; }
+.legend-cam i.n { border-color: var(--new); }
+@media (max-width: 480px) { .jin { gap: 6px; } .jin-ph { gap: 3px; } .jin-lab { font-size: 0.62rem; } }
+@media (prefers-reduced-motion: reduce) { .jin-ph img.late { transition: none; } }
+/* 11-01: #every v2, the paper teaser in motion. Inputs (photos and view-state tokens) above one Solv3R bar, outputs (3D) below;
+   each panel's JSON timeline drives its photos and tokens in sync with its video (loops.js initEvery2) */
+:root { --tk0: #d5e4f5; --tk1: #1d3f6e; }
+.ev { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 16px; margin-top: 12px; }
+.ev-in { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 0;
+         padding: 12px 10px 12px; margin-bottom: 20px; border-radius: 12px; background: var(--soft); }
+.ev-in::after { content: ""; position: absolute; left: calc(50% - 0.75px); bottom: -20px; width: 1.5px; height: 20px; background: var(--acc); opacity: 0.55; }
+.ev-name { display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; }
+.ev-name b { font: 500 0.98rem/1.2 var(--head); }
+.ev-name span { color: var(--muted); font-size: 0.82rem; line-height: 1.3; }
+.ev-photos { display: flex; justify-content: center; gap: 3px; height: 40px; width: 100%; overflow: hidden; }
+.ev-photos img { height: 100%; width: auto; max-width: 72px; flex: none; border-radius: 3px; object-fit: cover; box-sizing: border-box;
+                 border: 1.5px solid transparent; transition: max-width 0.45s ease, opacity 0.45s ease, margin 0.45s ease, transform 0.45s ease, border-color 0.4s; }
+.ev-photos img.off { max-width: 0; opacity: 0; margin: 0 -1.5px; transform: translateY(-10px); }
+.ev-photos img.new { border-color: var(--new); }
+.ev-tokens { display: flex; justify-content: center; align-items: center; gap: 3px; height: 14px; width: 100%; overflow: hidden; }
+.tk { display: inline-block; width: 14px; height: 10px; border-radius: 3px; flex: none; background: var(--tk0);
+      transition: background-color 0.25s linear, width 0.35s ease, opacity 0.35s ease, margin 0.35s ease, box-shadow 0.35s; }
+.tk.off { width: 0; opacity: 0; margin: 0 -1.5px; }
+.tk.tk-new { box-shadow: 0 0 0 2px var(--new); }
+.ev-k { font: 500 0.72rem/1 var(--mono); color: var(--acc); font-variant-numeric: tabular-nums; min-height: 0.72rem; }
+.ev-k:empty { display: none; }
+.ev-bar { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 10px 16px;
+          border: 1.5px solid var(--acc); border-radius: 12px; background: var(--paper); }
+.ev-bar svg { width: 17px; height: 17px; color: var(--acc); animation: every-spin 3.2s linear infinite; flex: none; }
+.ev-bar b { font: 600 1.02rem/1 var(--head); color: var(--acc); }
+.ev-bar-sub { color: var(--muted); font-size: 0.88rem; }
+.ev-bar .every-call:empty { display: none; }
+.ev-out { position: relative; margin: 20px 0 0; min-width: 0; }
+.ev-out::before { content: ""; position: absolute; left: calc(50% - 0.75px); top: -20px; width: 1.5px; height: 20px; background: var(--acc); opacity: 0.55; }
+.ev-out::after { content: ""; position: absolute; left: calc(50% - 5px); top: -7px; border: 5px solid transparent; border-top-color: var(--acc); opacity: 0.7; }
+.ev-legend { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 14px; margin-top: 14px; color: var(--faint); font-size: 0.78rem; }
+.ev-legend .tk { margin-right: 6px; vertical-align: -1px; }
+.ev-legend .tk-new { background: var(--paper); }
+.ev-grad { display: inline-block; width: 64px; height: 8px; border-radius: 4px; background: linear-gradient(90deg, var(--tk0), var(--acc), var(--tk1)); }
+@media (max-width: 760px) {
+  .ev { grid-template-columns: minmax(0, 1fr); }
+  .ev-bar { order: 0; margin-bottom: 14px; }
+  .ev-in[data-panel="offline"] { order: 1; } .ev-out[data-panel="offline"] { order: 2; }
+  .ev-in[data-panel="incremental"] { order: 3; } .ev-out[data-panel="incremental"] { order: 4; }
+  .ev-in[data-panel="stream"] { order: 5; } .ev-out[data-panel="stream"] { order: 6; }
+  .ev-in { margin-bottom: 0; border-radius: 12px 12px 0 0; } .ev-in::after, .ev-out::before, .ev-out::after { display: none; }
+  .ev-out { margin: 0 0 18px; } .ev-out .vt { border-radius: 0 0 12px 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .ev-bar svg { animation: none; } .tk, .ev-photos img { transition: none; } }
+/* 11-01: the method as the film's iteration: photos -> Solv3R block -> view states -> decoded 3D, with the "next call" loop */
+.mt-lead { max-width: 760px; margin: 0 auto 18px; text-align: center; color: var(--muted); text-wrap: pretty; }
+.mt { position: relative; display: grid; grid-template-columns: minmax(0, 1.05fr) 26px minmax(0, 0.8fr) 26px minmax(0, 0.62fr) 26px minmax(0, 2.2fr);
+      align-items: center; gap: 0; padding-bottom: 46px; }
+.mt-lab { font: 500 0.7rem/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); margin-bottom: 7px; text-align: center; }
+.mt-photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
+.mt-photos img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; box-sizing: border-box; border: 1.5px solid transparent;
+                 transition: opacity 0.45s ease, transform 0.45s ease, border-color 0.4s; }
+.mt-photos img.off { opacity: 0.12; transform: scale(0.9); filter: grayscale(1); }
+.mt-photos img.new { border-color: var(--new); }
+.mt-arr { height: 1.5px; background: var(--acc); opacity: 0.55; position: relative; margin: 0 4px; }
+.mt-arr::after { content: ""; position: absolute; right: -2px; top: -4.5px; border: 5px solid transparent; border-left-color: var(--acc); }
+.mt-block { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 10px; border: 1.5px solid var(--acc); border-radius: 12px;
+            background: var(--paper); text-align: center; transition: box-shadow 0.25s; }
+.mt-block svg { width: 18px; height: 18px; color: var(--acc); animation: every-spin 3.2s linear infinite; }
+.mt-block b { font: 600 0.98rem/1.2 var(--head); color: var(--acc); }
+.mt-block small { color: var(--muted); font-size: 0.74rem; line-height: 1.35; }
+.mt-block.pulse { animation: mt-pulse 0.5s ease-out; }
+@keyframes mt-pulse { from { box-shadow: 0 0 0 5px rgba(69, 137, 208, 0.28); } to { box-shadow: 0 0 0 0 rgba(69, 137, 208, 0); } }
+.mt-call { font: 500 0.76rem/1 var(--mono); color: var(--acc); font-variant-numeric: tabular-nums; }
+.mt-tokens { display: grid; grid-template-columns: repeat(2, 18px); gap: 5px; justify-content: center; }
+.mt-tokens .tk { width: 18px; height: 13px; }
+.mt-tokens .tk.off { width: 18px; opacity: 0.12; margin: 0; background: var(--line) !important; }
+.mt-out .vt { border-radius: 10px; }
+.mt-loop { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.mt-event { text-align: center; min-height: 1.5em; margin: 0 0 10px; color: var(--ink); font: 500 1rem/1.5 var(--head); }
+.mt-paper { max-width: 900px; margin: 6px auto 0; color: var(--muted); font-size: 0.86rem; }
+.mt-paper summary { cursor: pointer; text-align: center; }
+.mt-paper img { width: 100%; height: auto; margin-top: 10px; border-radius: 8px; }
+@media (max-width: 760px) {
+  .mt { grid-template-columns: minmax(0, 1fr); gap: 10px; padding-bottom: 0; }
+  .mt-arr { width: 1.5px; height: 16px; margin: 0 auto; } .mt-arr::after { right: -4.5px; top: auto; bottom: -6px; border-left-color: transparent; border-top-color: var(--acc); }
+  .mt-photos { grid-template-columns: repeat(4, minmax(0, 1fr)); } .mt-tokens { grid-template-columns: repeat(4, 18px); }
+}
+@media (prefers-reduced-motion: reduce) { .mt-block svg { animation: none; } .mt-block.pulse { animation: none; } }
+
+/* 11-01: streaming card. Incoming frames, the Solv3R block, one token per frame (anchor / KV cache / window), the 3D below;
+   a frame that leaves the window drops into the scene (decoded); the paper's bubble chart under it */
+.sc-card { padding-block: 30px; }
+.sc { position: relative; display: flex; flex-direction: column; align-items: stretch; gap: 0; max-width: 980px; margin: 4px auto 0; width: 100%; }
+.sc-film { display: flex; justify-content: flex-end; gap: 4px; height: 50px; overflow: hidden; margin-bottom: 12px; }
+.sc-film img { height: 100%; width: auto; max-width: 92px; flex: none; border-radius: 4px; object-fit: cover; box-sizing: border-box; border: 1.5px solid transparent;
+               transition: max-width 0.45s ease, opacity 0.45s ease, margin 0.45s ease, border-color 0.4s; }
+.sc-film img.off { max-width: 0; opacity: 0; margin: 0 -2px; }
+.sc-film img.new { border-color: var(--new); }
+.sc-block { align-self: center; display: flex; align-items: center; gap: 9px; padding: 8px 16px; border: 1.5px solid var(--acc); border-radius: 12px; background: var(--paper); z-index: 1; }
+.sc-block svg { width: 16px; height: 16px; color: var(--acc); animation: every-spin 3.2s linear infinite; }
+.sc-block b { font: 600 0.98rem/1 var(--head); color: var(--acc); }
+.sc-call { font: 500 0.74rem/1 var(--mono); color: var(--acc); font-variant-numeric: tabular-nums; padding-left: 9px; border-left: 1px solid var(--line); }
+.sc-call:empty { display: none; }
+.sc-row { margin-top: 44px; display: flex; justify-content: center; }
+.sc-tokens { display: flex; align-items: center; gap: 4px; height: 18px; }
+.sc-tokens .tk { width: 18px; height: 14px; }
+.sc-tokens .tk[data-role="anchor"] { box-shadow: inset 0 0 0 2px #0e223e; }
+.sc-tokens .tk[data-role="refresh"] { box-shadow: 0 0 0 2px var(--acc); }
+.sc-labs { position: relative; height: 26px; }
+.sc-lab { position: absolute; top: 12px; transform: translateX(-50%); white-space: nowrap; font: 500 0.7rem/1 var(--mono); letter-spacing: 0.06em;
+          text-transform: uppercase; color: var(--faint); transition: left 0.35s ease, opacity 0.3s; }
+.sc-lab[data-role="window"] { color: var(--acc); }
+.sc-out { margin-top: 14px; }
+.sc-out .vt { border-radius: 12px; }
+.sc-wires { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.sc-ghost { position: absolute; width: 18px; height: 14px; border-radius: 3px; background: var(--tk1); z-index: 2; pointer-events: none;
+            animation: sc-drop 1.2s cubic-bezier(0.5, 0, 0.75, 0) forwards; }
+@keyframes sc-drop { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 70% { opacity: 0.9; } 100% { transform: translate(calc(var(--dx) * 0.15), var(--dy)) scale(0.5); opacity: 0; } }
+.sc-bub { max-width: 760px; margin: 26px auto 0; width: 100%; }
+.sc-bub h4 { font: 500 1.02rem/1.3 var(--head); margin: 0 0 6px; text-align: center; }
+@media (max-width: 600px) { .sc-row { margin-top: 30px; } .sc-tokens .tk { width: 13px; height: 11px; } .sc-lab { font-size: 0.6rem; } .sc-film { height: 40px; } }
+@media (prefers-reduced-motion: reduce) { .sc-block svg { animation: none; } }
+.mt-out .vt video { aspect-ratio: 4 / 3; }
+.sc-out .vt video { aspect-ratio: 16 / 9; }
+.mt-event::first-letter { text-transform: uppercase; }
+/* 11-01: light clip tiles (the relocalization card) */
+.vt.light { background: #fff; border: 1px solid var(--line); }
+.vt.light video { aspect-ratio: 16 / 10; background: #fff; }
+.sc-tokens .tk.off { width: 0; margin: 0 -2px; }
+.sc-tokens { gap: 5px; height: 20px; }
+.sc-tokens .tk { width: 22px; height: 16px; }
+.sc-out { max-width: 860px; width: 100%; margin: 14px auto 0; }
+@media (max-width: 600px) { .sc-tokens { gap: 3px; } .sc-tokens .tk { width: 12px; height: 10px; } }
+
+/* ===== 11-02 rework (user): tokens fill from the bottom as in the film, a film-like Solv3R block, the film's order in #every
+   (block, then the 3D, then the tokens under it), and the streaming card with the 3D first */
+:root { --tk-edge: #9db8d8; --tk-pale: #a9c6e6; --tk-navy: #1d3f6e; --tk-grey: #b1bac6; }
+.tk { position: relative; display: inline-block; flex: none; box-sizing: border-box; width: 12px; height: 16px; border-radius: 3.5px;
+      border: 1.5px solid var(--tk-edge); background: #fff; overflow: hidden;
+      transition: width 0.35s ease, opacity 0.35s ease, margin 0.35s ease, box-shadow 0.35s, border-color 0.3s; }
+.tk > b { position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: var(--acc); transition: height 0.18s linear, background-color 0.25s linear; }
+.tk.off { width: 0; opacity: 0; margin: 0 -1.5px; border-width: 0; }
+.tk.tk-new { box-shadow: 0 0 0 2px var(--new); }
+.tk[data-role="anchor"] { border-color: var(--tk-navy); }
+.tk[data-role="cache"] { border-color: var(--tk-grey); }
+.tk[data-role="refresh"] { border-color: var(--acc); animation: tk-flash 0.5s ease-in-out infinite alternate; }
+@keyframes tk-flash { from { box-shadow: 0 0 0 0 rgba(69, 137, 208, 0); } to { box-shadow: 0 0 0 3px rgba(69, 137, 208, 0.45); } }
+.tk-demo { vertical-align: -3px; margin-right: 6px; }
+
+/* the Solv3R block, shared by #every, the method and the streaming card */
+.sv-block { display: flex; align-items: center; justify-content: center; gap: 10px; width: max-content; max-width: 100%; margin: 0 auto;
+            padding: 11px 20px; border-radius: 14px; background: linear-gradient(180deg, #15273f, #0c182a); border: 1.5px solid var(--acc);
+            color: #fff; box-shadow: 0 6px 18px rgba(15, 35, 70, 0.16), 0 0 0 4px rgba(69, 137, 208, 0.10); position: relative; z-index: 1; }
+.sv-block svg { width: 17px; height: 17px; color: #96c4f2; flex: none; animation: every-spin 3.2s linear infinite; }
+.sv-block b { font: 600 1.02rem/1.1 var(--head); color: #fff; letter-spacing: 0.01em; }
+.sv-block small { color: #b9cbe0; }
+.sv-block .sv-call, .sv-block .mt-call, .sv-block .sc-call { font: 500 0.78rem/1 var(--mono); color: #96c4f2; font-variant-numeric: tabular-nums;
+            border-left: 1px solid rgba(150, 196, 242, 0.35); padding-left: 10px; }
+.sv-block .sv-call:empty, .sv-block .sc-call:empty, .sv-block .mt-call:empty { display: none; }
+.sv-block.pulse { animation: sv-pulse 0.45s ease-out; }
+@keyframes sv-pulse { from { box-shadow: 0 6px 18px rgba(15, 35, 70, 0.16), 0 0 0 8px rgba(69, 137, 208, 0.38); }
+                      to { box-shadow: 0 6px 18px rgba(15, 35, 70, 0.16), 0 0 0 4px rgba(69, 137, 208, 0.10); } }
+.mt-block.sv-block { flex-direction: column; width: auto; padding: 16px 12px; gap: 7px; }
+.mt-block.sv-block small { font-size: 0.74rem; line-height: 1.4; }
+.mt-block.sv-block .mt-call { border-left: 0; padding-left: 0; }
+
+/* #every in the film's order: the block on top, wires down to three panels, each panel's tokens and photos under its 3D */
+.ev3 { position: relative; margin-top: 14px; }
+.ev3-wires { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.ev3-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 46px; }
+.ev3-col { margin: 0; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.ev3-name { display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; }
+.ev3-name b { font: 500 0.98rem/1.2 var(--head); }
+.ev3-name span { color: var(--muted); font-size: 0.82rem; line-height: 1.3; }
+.ev3-col .vt { width: 100%; }
+.ev3-tokens { display: flex; justify-content: center; align-items: flex-end; gap: 3px; height: 18px; width: 100%; overflow: hidden; margin-top: 2px; }
+.ev3-photos { display: flex; justify-content: center; gap: 3px; height: 30px; width: 100%; overflow: hidden; opacity: 0.9; }
+.ev3-photos img { height: 100%; width: auto; max-width: 54px; flex: none; border-radius: 3px; object-fit: cover; box-sizing: border-box;
+                  border: 1.5px solid transparent; transition: max-width 0.45s ease, opacity 0.45s ease, margin 0.45s ease, border-color 0.4s; }
+.ev3-photos img.off { max-width: 0; opacity: 0; margin: 0 -1.5px; }
+.ev3-photos img.new { border-color: var(--new); }
+.ev3-k { font: 500 0.72rem/1 var(--mono); color: var(--acc); font-variant-numeric: tabular-nums; min-height: 0.72rem; }
+.ev3-k:empty { visibility: hidden; }
+@media (max-width: 760px) { .ev3-cols { grid-template-columns: minmax(0, 1fr); gap: 26px; margin-top: 18px; } .ev3-wires { display: none; } }
+
+/* streaming card: the 3D first, then the block, the token row (anchor, KV cache, window) and its labels */
+.sc-out { max-width: 900px; width: 100%; margin: 0 auto; }
+.sc .sv-block { margin-top: 18px; }
+.sc-row { margin-top: 40px; }
+.sc-tokens { gap: 4px; height: 24px; align-items: flex-end; }
+.sc-tokens .tk { width: 16px; height: 22px; }
+.sc-tokens .tk.off { width: 0; margin: 0 -2px; }
+.sc-labs { height: 30px; }
+.sc-refresh { position: absolute; top: -78px; transform: translateX(-50%); white-space: nowrap; font: 500 0.74rem/1 var(--mono); color: var(--acc);
+              background: var(--paper); padding: 3px 6px; border-radius: 6px; opacity: 0; transition: opacity 0.25s, left 0.3s ease; pointer-events: none; }
+.sc-refresh.on { opacity: 1; }
+.sc-ghost { background: var(--acc); }
+@media (max-width: 600px) { .sc-tokens .tk { width: 11px; height: 15px; } .sc-refresh { font-size: 0.62rem; } }
+/* 11-02: the join card's cameras carry their error colour again (the card is about correcting the first cameras); legend without numbers */
+.legend-cam { align-items: center; flex-wrap: wrap; }
+.legend-cam .lg-err { display: inline-flex; align-items: center; gap: 7px; }
+.legend-cam .lg-bar { display: inline-block; width: 84px; height: 7px; border-radius: 4px; border: 0; margin: 0;
+                      background: linear-gradient(90deg, #26965a 0%, #e1aa28 50%, #c83232 100%); }
+.legend-cam .lg-ends { display: inline-flex; gap: 4px; font-size: 0.74rem; }
+.legend-cam .lg-ends span + span::before { content: "→ "; }
+.legend-cam i.o { border-color: #5b6573; }
+.legend-cam i.o.thick { border-width: 3px; }
+.legend-cam i.o.thin { border-width: 1px; }
+.sc-lab[data-role="anchor"] { transform: none; }
+.sc-lab[data-role="window"] { transform: translateX(-100%); }
+/* 11-02: the pipelining card plays the film's pipelining scene (v23), cropped to the two lanes */
+.pipe-card .card-txt { max-width: 860px; }
+.pipe-vt video { aspect-ratio: 1280 / 488; }
+.sc-lab[data-role="anchor"] { transform: translateX(-100%); top: -27px; }
+.sc-lab[data-role="window"] { transform: none; top: -27px; }
+@media (max-width: 600px) { .sc-lab[data-role="anchor"], .sc-lab[data-role="window"] { top: 10px; } .sc-lab[data-role="anchor"] { transform: none; } .sc-lab[data-role="window"] { transform: translateX(-100%); } }
+.sc-lab[data-role="anchor"], .sc-lab[data-role="window"] { top: -20px; }
+
+/* ===== 11-02 round 3: method inside the abilities flow, zigzag cards, framed dark clips */
+.method-card { padding-top: 26px; }
+.method-card .card-txt { text-align: center; max-width: none; }
+.mt-arr { margin: 0 12px 0 6px; }
+.mt-arr::after { right: -6px; }
+.mt { padding-right: 4px; }
+/* dark clips sit in a soft "screen" frame that matches the Solv3R block instead of a hard black box */
+.vt:not(.light) { background: #05080e; border: 1px solid #1b2a40; box-shadow: 0 10px 28px rgba(15, 35, 70, 0.16), inset 0 0 0 1px rgba(150, 196, 242, 0.06); }
+.vt:not(.light) video { background: #05080e; }
+/* three stages of four photos: photos and view states in rows of four */
+.mt-photos { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3px; }
+.mt-tokens { grid-template-columns: repeat(4, 18px); }
+.mt { grid-template-columns: minmax(0, 1.25fr) 30px minmax(0, 0.7fr) 30px minmax(0, 0.75fr) 30px minmax(0, 2.1fr); }
+/* 11-02: setting cards (offline, streaming, any order) */
+.set-card .media { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.set-card .vt video { aspect-ratio: 16 / 9; }
+.set-tokens { display: flex; justify-content: center; align-items: flex-end; gap: 3px; height: 18px; width: 100%; overflow: hidden; }
+.set-photos { display: flex; justify-content: center; gap: 3px; height: 30px; width: 100%; overflow: hidden; }
+.set-photos img { height: 100%; width: auto; max-width: 54px; flex: none; border-radius: 3px; object-fit: cover; box-sizing: border-box; border: 1.5px solid transparent;
+                  transition: max-width 0.45s ease, opacity 0.45s ease, margin 0.45s ease, border-color 0.4s; }
+.set-photos img.off { max-width: 0; opacity: 0; margin: 0 -1.5px; }
+.set-photos img.new { border-color: var(--new); }
+.set-k { font: 500 0.72rem/1 var(--mono); color: var(--acc); font-variant-numeric: tabular-nums; min-height: 0.72rem; }
+.set-bub { padding-top: 0; }
+/* 11-02 r4: the join-at-any-call widget sits among the cards on the light page; its 3D and loop keep their dark panels */
+.how-card .how { margin-top: 6px; }
+.how-card .joinpick .jp-label, .how-card .bars-title { color: var(--muted); }
+.how-card .bars { background: var(--soft); border-color: var(--line); color: var(--ink); }
+.how-card .bar-name, .how-card .bar-v { color: var(--ink); }
+.how-card .timeline, .how-card .chips-row { color: var(--muted); }
+.how-card .jp { border-color: var(--line); color: var(--muted); background: var(--paper); }
+.how-card .jp:hover { color: var(--ink); }
+.how-card .jp[aria-checked="true"] { color: var(--paper); background: var(--acc); border-color: var(--acc); }
+.how-card .bar[data-k="alone"] .bar-name { color: var(--muted); }
+.how-card .bar-track { background: rgba(35, 39, 46, 0.08); }
+.how-card .bar-track i { background: var(--acc); }
+.how-card .tl-play { border-color: var(--line); background: var(--paper); color: var(--ink); }
+.how-card .tl-rail { background: rgba(35, 39, 46, 0.14); }
+.how-card .tl-ticks i { background: rgba(35, 39, 46, 0.25); }
+.how-card .tl-head { background: var(--acc); }
+.how-card .loop, .how-card .stage { border-color: #1b2a40; }
+/* 11-02 r4: "Any order, no matter." one clip in segments with mode tabs above and tokens below */
+.ao { max-width: 980px; margin: 4px auto 0; display: flex; flex-direction: column; align-items: center; gap: 9px; }
+.ao-tabs { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.ao-tab { border: 1px solid var(--line); background: var(--paper); color: var(--muted); border-radius: 999px; padding: 7px 15px; font: 500 0.86rem/1 var(--head); cursor: pointer; transition: all .2s; }
+.ao-tab:hover { color: var(--ink); }
+.ao-tab[aria-selected="true"] { background: var(--acc); border-color: var(--acc); color: #fff; }
+.ao .vt video { aspect-ratio: 16 / 9; }
+.ao-tokens { display: flex; justify-content: center; align-items: flex-end; gap: 3px; height: 18px; width: 100%; overflow: hidden; }
+.ao-photos { display: flex; justify-content: center; gap: 3px; height: 30px; width: 100%; overflow: hidden; }
+.ao-photos img { height: 100%; width: auto; max-width: 54px; flex: none; border-radius: 3px; object-fit: cover; transition: max-width .45s, opacity .45s, margin .45s; }
+.ao-photos img.off { max-width: 0; opacity: 0; margin: 0 -1.5px; }
+.ao-k { font: 500 0.72rem/1 var(--mono); color: var(--acc); font-variant-numeric: tabular-nums; min-height: 0.72rem; }
+.mt { padding-bottom: 64px; }
+/* 11-02: film-style chip rows under the #every clips */
+.ev3-tokens.fchips { position: relative; height: 16px; margin: 4px auto 0; overflow: visible; display: block; }
+.fc { position: absolute; top: 0; width: 12px; height: 15px; border-radius: 3.5px; box-sizing: border-box; border: 1.5px solid var(--tk-edge); background: #fff; overflow: hidden; transition: opacity .2s; }
+.fc > b { position: absolute; left: 0; right: 0; bottom: 0; height: 0; }
+.fc.empty { border-style: dashed; border-color: #b8c0cb; }

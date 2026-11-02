@@ -1,0 +1,14 @@
+# Published as a Release asset, not stored in Git history.
+/solv3r.pdf
+/static/dense/
+/static/gallery/
+/static/scenes/
+/static/loops/
+/static/play_video/
+/static/videos/
+
+# Local packaging and preview outputs.
+/_release/
+/_site/
+__pycache__/
+.DS_Store

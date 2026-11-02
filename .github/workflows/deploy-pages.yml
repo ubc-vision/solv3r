@@ -1,0 +1,75 @@
+name: Deploy project page (manual)
+
+# No push or release trigger: publication requires an explicit manual run.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out lightweight website source
+        uses: actions/checkout@v6
+        with:
+          ref: gh-pages
+          path: website
+          persist-credentials: false
+
+      - name: Read pinned asset release
+        id: assets
+        working-directory: website
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+          config = json.loads(Path('assets-release.json').read_text())
+          for key in ('tag', 'asset'):
+              value = config[key]
+              if not isinstance(value, str) or not value or '\n' in value or '\r' in value:
+                  raise ValueError(f'Invalid asset config: {key}')
+              print(f'{key}={value}')
+          PY
+
+      - name: Download website data from this repository's Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ASSETS_TAG: ${{ steps.assets.outputs.tag }}
+          ASSETS_FILE: ${{ steps.assets.outputs.asset }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/website-assets"
+          gh release download "$ASSETS_TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern "$ASSETS_FILE" \
+            --dir "$RUNNER_TEMP/website-assets"
+
+      - name: Verify archive and assemble site
+        working-directory: website
+        env:
+          ASSETS_FILE: ${{ steps.assets.outputs.asset }}
+        run: python3 scripts/site_assets.py build --archive "$RUNNER_TEMP/website-assets/$ASSETS_FILE"
+
+      - name: Upload assembled Pages site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: website/_site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
