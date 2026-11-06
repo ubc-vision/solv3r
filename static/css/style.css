@@ -315,3 +315,5 @@ table.res tr.ours td.r3 { background: rgb(252, 244, 209); }
 
 
 .gal-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: var(--d-stage); z-index: 1; opacity: 0; transition: opacity .4s; cursor: grab; }
+.btn .hf-emoji { font-size: 17px; line-height: 1; }
+.card .media > video { display: block; width: 100%; height: auto; border-radius: 12px; }

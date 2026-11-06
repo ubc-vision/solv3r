@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="static/css/style.css?v=wordmark-1">
   <link rel="stylesheet" href="static/css/wordmark.css?v=6">
   <link rel="stylesheet" href="static/css/loops.css">
-  <link rel="icon" type="image/svg+xml" href="static/images/favicon.svg?v=3">
+  <link rel="icon" type="image/svg+xml" href="static/images/favicon.svg?v=4">
   <script type="importmap">
     { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
                    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }
@@ -62,7 +62,7 @@
       <span><sup>6</sup>Sony Corporation</span>
     </div>
     <nav class="links" aria-label="Paper links">
-      <a class="btn" href="solv3r.pdf" target="_blank" rel="noopener" title="Read the paper (PDF)">
+      <a class="btn" href="https://arxiv.org/abs/2611.02857" target="_blank" rel="noopener" title="Read the paper (arXiv)">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 2.5c1.3-1.1 2.9.5 1.8 1.8L7 18.5c-1.3 1.4-3.3-.3-2-1.8Z" fill="none" stroke="currentColor" stroke-width=".9"/><path d="M4.4 1.7c-1-1-2.5.4-1.5 1.5l15.8 19c.9 1.1 2.4-.3 1.5-1.4Z" fill="currentColor"/><path d="m5 7 12 13" fill="none" stroke="currentColor" stroke-width=".8" stroke-linecap="round"/></svg>
         <span>Paper</span></a>
       <a class="btn" href="https://github.com/ubc-vision/solv3r" target="_blank" rel="noopener" title="Code">
@@ -71,6 +71,9 @@
       <a class="btn" href="#film">
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor"/></svg>
         <span>Video</span></a>
+      <a class="btn" href="https://huggingface.co/jgkwak/solv3r" target="_blank" rel="noopener" title="Model (Hugging Face)">
+        <span class="hf-emoji" aria-hidden="true">&#129303;</span>
+        <span>Model</span></a>
       <a class="btn btn-accent" href="#gallery">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z M4 7.5l8 4.5 8-4.5M12 12v9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
         <span>Interactive</span></a>
@@ -82,7 +85,7 @@
 <section class="section" id="film">
   <div class="wrap">
     <figure class="video">
-      <video controls muted playsinline preload="metadata" poster="static/videos/solv3r_film_poster.jpg">
+      <video controls autoplay muted playsinline preload="auto" poster="static/videos/solv3r_film_poster.jpg">
         <source src="static/videos/solv3r_film.mp4" type="video/mp4">
       </video>
     </figure>
@@ -271,6 +274,17 @@
       </div>
       <div class="media"><div class="svgbox" id="cache-anim"></div></div>
     </div>
+
+    <div class="card" id="subsets">
+      <div class="card-txt">
+        <h3>Stochastic updates. Global reconstruction.</h3>
+        <p>Because the update does not depend on the step, views at different stages can be solved together.
+          Each call updates a random subset of views, while the others join as constraints through the same cache.
+          Here each call updates 8 of 128 photos, and all 128 end up in one scene,
+          in 1.2&nbsp;GB of GPU memory instead of 12.8&nbsp;GB for VGGT.</p>
+      </div>
+      <div class="media"><video autoplay muted loop playsinline disablepictureinpicture preload="metadata" poster="static/images/subset/ballroom_subsets_poster.jpg" aria-label="128 photos of a ballroom solved 8 random photos at a time, with the GPU memory of Solv3R and VGGT"><source src="static/images/subset/ballroom_subsets.mp4" type="video/mp4"></video></div>
+    </div>
   </div>
 </section>
 
@@ -369,10 +383,10 @@
   <div class="wrap narrow">
     <h2 class="h2 center">BibTeX</h2>
 
-    <pre class="bib"><code>@article{solv3r2026,
+    <pre class="bib"><code>@article{kwak2026solv3r,
   title   = {Solv3R: 3D Looped Transformer as a Multi-view Solver},
   author  = {Kwak, Jeong-gi and Tagliasacchi, Andrea and Kagami, Sho and Ono, Yuki and Yi, Kwang Moo},
-  journal = {arXiv preprint},
+  journal = {arXiv preprint arXiv:2611.02857},
   year    = {2026}
 }</code></pre>
   </div>
