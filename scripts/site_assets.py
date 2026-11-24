@@ -15,7 +15,8 @@ from urllib.parse import unquote, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 MEDIA = ('dense', 'gallery', 'scenes', 'loops', 'play_video', 'videos')
 # Removed from the gallery; retain local originals but do not ship them.
-EXCLUDED = ('static/dense/building_stream', 'static/play_video/building.mp4')
+EXCLUDED = ('static/dense/building_stream', 'static/play_video/building.mp4', 'static/dense/london', 'static/dense/poster',
+            'static/play_video/london.mp4', 'static/play_video/poster.mp4')
 CONFIG = ROOT / 'assets-release.json'
 
 
@@ -30,14 +31,13 @@ def digest(path):
 def media_path(name):
     p = PurePosixPath(name)
     return (not p.is_absolute() and '..' not in p.parts and
-            (name == 'solv3r.pdf' or
-             any(name.startswith(f'static/{directory}/') for directory in MEDIA)))
+            any(name.startswith(f'static/{directory}/') for directory in MEDIA))
 
 
 def pack(args):
     archive = ROOT / '_release/website-assets.tar.gz'
     archive.parent.mkdir(exist_ok=True)
-    paths = [ROOT / 'solv3r.pdf']
+    paths = []
     for directory in MEDIA:
         base = ROOT / 'static' / directory
         if not base.is_dir():
@@ -96,8 +96,6 @@ def validate(site):
         walk(data)
     if missing:
         raise ValueError('Missing site assets: ' + ', '.join(sorted(set(missing))))
-    if not (site / 'solv3r.pdf').is_file():
-        raise ValueError('Paper PDF is missing')
     size = sum(p.stat().st_size for p in site.rglob('*') if p.is_file())
     if size >= 1_000_000_000:
         raise ValueError('Site exceeds the 1 GB Pages limit')

@@ -125,9 +125,8 @@ class Player {
 
 
 const GALLERY = [
-
-
-
+  { id: 'sofas', name: 'Sofas', poster: 'static/dense/sofas/views/009.jpg', setting: 'Incremental', sub: 'new frames join the solve', play: { mode: 'grow', duration: 12 }, dense: 'static/dense/sofas', camera: { yaw: 30, elev: 35, dist: 3.2 },
+    note: 'Eight frames of a handheld video are solved first, and ten more frames join the ongoing solve.' },
   { id: 'colosseum', name: 'Colosseum', setting: 'Offline', sub: '91 photos at once', play: { mode: 'offline', duration: 9 },
     note: 'VGGT example images. All 91 photos are solved together for 24 calls.' },
   { id: 'canyon', name: 'Basalt canyon', poster: 'static/dense/canyon_stream/views/024.jpg', setting: 'Streaming', sub: 'a video, frame by frame', play: { mode: 'stream', duration: 14 }, dense: 'static/dense/canyon_stream', camera: { yaw: 0, elev: 30, dist: 2.75 },
@@ -136,20 +135,16 @@ const GALLERY = [
 
     camera: { yaw: -80, elev: 36, dist: 2.5, target: [0.089, 0.016, 0.008], fov: 42 },
     note: 'Mill19, 96 aerial photos. Eight photos spread over the site are solved first, and the other 88 arrive in a random order, eight at a time. Cameras are colored by their rotation error against the dataset poses.' },
-  { id: 'palace', name: 'Palace of Fine Arts', poster: 'static/dense/palace/views/024.jpg', setting: 'Offline', sub: '48 photos at once', play: { mode: 'offline', duration: 9 }, dense: 'static/dense/palace', camera: { yaw: 0, elev: 35, dist: 2.4 },
-    note: 'DL3DV-10K validation scene. All 48 photos are solved together.' },
-  { id: 'restaurant', name: 'Restaurant', setting: 'Streaming', sub: 'a video, frame by frame', play: { mode: 'stream', duration: 16 },
-    note: 'DL3DV-10K validation video, 161 frames. Each frame is solved when it arrives, in a small window of recent and anchor frames, and the map shows each frame as it left the window. The ceiling is hidden so that the room can be seen from above.' },
   { id: 'courtyard', name: 'Courtyard', poster: 'static/dense/courtyard/views/012.jpg', setting: 'Any order', sub: 'photos arriving in any order', play: { mode: 'ooo', duration: 14 }, dense: 'static/dense/courtyard', camera: { yaw: 0, elev: 35, dist: 2.7 },
     note: 'ETH3D courtyard, 38 photos. Eight photos are solved first, and the other 30 arrive in a random order, four at a time.' },
-  { id: 'library', name: 'Library aisle', poster: 'static/dense/library/views/024.jpg', setting: 'Offline', sub: '48 photos at once', play: { mode: 'offline', duration: 9 }, dense: 'static/dense/library', camera: { yaw: -35, elev: 30, dist: 2.3 },
-    note: 'DL3DV-10K validation scene. All 48 photos are solved together. The ceiling is hidden so that the aisle can be seen from above.' },
+  { id: 'restaurant', name: 'Restaurant', setting: 'Streaming', sub: 'a video, frame by frame', play: { mode: 'stream', duration: 16 },
+    note: 'DL3DV-10K validation video, 161 frames. Each frame is solved when it arrives, in a small window of recent and anchor frames, and the map shows each frame as it left the window. The ceiling is hidden so that the room can be seen from above.' },
+  { id: 'palace', name: 'Palace of Fine Arts', poster: 'static/dense/palace/views/024.jpg', setting: 'Offline', sub: '48 photos at once', play: { mode: 'offline', duration: 9 }, dense: 'static/dense/palace', camera: { yaw: 0, elev: 35, dist: 2.4 },
+    note: 'DL3DV-10K validation scene. All 48 photos are solved together.' },
   { id: 'courtroom', name: 'Courtroom', poster: 'static/dense/courtroom/views/024.jpg', setting: 'Any order', sub: 'photos arriving in any order', play: { mode: 'ooo', duration: 14 }, dense: 'static/dense/courtroom', camera: { yaw: 0, elev: 35, dist: 2.4 },
     note: 'Tanks and Temples Courtroom, 48 photos. Eight photos are solved first, and the other 40 arrive in a random order, four at a time. The ceiling is hidden so that the room can be seen from above.' },
-  { id: 'london', name: 'Living room', poster: 'static/dense/london/views/024.jpg', setting: 'Any order', sub: 'photos arriving in any order', play: { mode: 'ooo', duration: 14 }, dense: 'static/dense/london', camera: { yaw: 60, elev: 35, dist: 1.2, target: [-0.1, -0.15, 0] }   ,
-    note: 'Zip-NeRF London living room, 48 photos. Eight photos are solved first, and the other 40 arrive in a random order, four at a time.' },
-
-
+  { id: 'library', name: 'Library aisle', poster: 'static/dense/library/views/024.jpg', setting: 'Offline', sub: '48 photos at once', play: { mode: 'offline', duration: 9 }, dense: 'static/dense/library', camera: { yaw: -35, elev: 30, dist: 2.3 },
+    note: 'DL3DV-10K validation scene. All 48 photos are solved together. The ceiling is hidden so that the aisle can be seen from above.' },
 ];
 const GAL = 'static/gallery', PLAY = 'static/play';
 

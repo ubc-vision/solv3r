@@ -20,7 +20,7 @@
     { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
                    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }
   </script>
-  <script type="module" src="static/js/main.js?v=gallery-2"></script>
+  <script type="module" src="static/js/main.js?v=gallery-3"></script>
   <script type="module" src="static/js/loops.js"></script>
   <script type="module">
     import('./static/js/wordmark.js?v=8').catch(() => {
@@ -95,7 +95,7 @@
 <section class="section" id="abstract">
   <div class="wrap narrow">
     <h2 class="h2 center">Abstract</h2>
-    <p class="abstract">Classical structure-from-motion reconstruction proceeds iteratively, refining camera poses and scene geometry from a current estimate. This allows maps to easily expand without recomputing already computed views, or geometry estimates to improve as more observations are provided. Most geometric foundation models, however, predict entire geometry in a single forward pass or update a recurrent state as frames arrive sequentially, making this expansion and refinement non-trivial. We introduce Solv3R, a looped transformer that learns to continue solving multi-view geometry from its current state. Importantly, its update operator is independent of the iteration count, allowing previously refined and newly introduced views to be jointly updated regardless of how “solved” they are. We train the operator to preserve accurate reconstructions under continued iteration and correct inaccurate states, enabling refinement of fixed image collections and integration of new observations. Representations of solved views can also be cached once and reused as geometric context across iterations, enabling compact and efficient key-value caching. We analyze the solver dynamics and compare it with the state-of-the-art, demonstrating that a single learned solver supports offline reconstruction, incremental reconstruction, relocalization, and streaming without task-specific training or modules.</p>
+    <p class="abstract">Classical structure-from-motion reconstruction proceeds iteratively, refining camera poses and scene geometry from a current estimate. This allows maps to easily expand without recomputing solved views, or geometry estimates to improve as more observations are provided. Most geometric foundation models, however, predict entire geometry in a single forward pass or update a recurrent state as frames arrive sequentially, making this expansion and refinement non-trivial. We introduce Solv3R, a looped transformer that learns to continue solving multi-view geometry from its current state. Importantly, its update operator is independent of the iteration count, allowing previously refined and newly introduced views to be updated jointly or selectively, regardless of how “solved” they are. We train the operator to preserve accurate reconstructions under continued iteration and correct inaccurate states, enabling refinement of fixed image collections and integration of new observations. Representations of solved views can also be cached once and reused as geometric context across iterations, enabling compact and efficient key-value caching. We analyze the solver dynamics and compare it with the state-of-the-art, showing that a single learned solver supports offline and incremental reconstruction, relocalization, and streaming without task-specific training or learned modules. The code and model are available at <a href="https://github.com/ubc-vision/solv3r" target="_blank" rel="noopener">https://github.com/ubc-vision/solv3r</a>.</p>
   </div>
 </section>
 
@@ -202,7 +202,7 @@
 
     <div class="card flip" data-join-at="1">
       <div class="card-txt">
-        <h3>New photos also correct the old ones</h3>
+        <h3>New evidence can change old estimates</h3>
         <p>New views join the ongoing solve and improve earlier camera estimates. DéjàView fails to jointly refine new and previously solved views.</p>
       </div>
       <div class="media">
@@ -296,7 +296,6 @@
       <div class="dhead">
         <div class="kicker">Interactive</div>
         <h2 class="dh2">Explore the reconstructions</h2>
-        <p class="lead">Every scene below was solved by the same model from images alone, whether the photos came all at once, as a video, or in any order.</p>
       </div>
       <div class="player" id="gallery-player">
         <div class="stage gal-stage">
@@ -355,9 +354,9 @@
       </figure>
       <figure class="paper-result paper-result-plot">
         <a href="static/images/results/streaming-tradeoff.png" target="_blank" rel="noopener" aria-label="Open streaming accuracy and efficiency chart at full resolution">
-          <img src="static/images/results/streaming-tradeoff.png" alt="Paper Figure 12: pose error versus runtime, with bubble size indicating peak GPU memory." loading="lazy">
+          <img src="static/images/results/streaming-tradeoff.png" alt="Paper Figure 14: pose error versus runtime, with bubble size indicating peak GPU memory." loading="lazy">
         </a>
-        <figcaption>Figure 12. Streaming accuracy vs. efficiency.</figcaption>
+        <figcaption>Figure 14. Streaming accuracy vs. efficiency.</figcaption>
       </figure>
     </div>
     <div class="res-pane" id="tab-map" role="tabpanel" aria-labelledby="result-map" hidden>
